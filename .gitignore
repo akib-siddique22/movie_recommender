@@ -1,0 +1,21 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment folder
+env/
+
+# Compiled Python files
+*.pyc
+
+# Logs
+*.log
+
+# Local development settings
+instance/
+
+# Virtual Environment
+venv/
+backend/recom_sys
