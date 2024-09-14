@@ -18,4 +18,4 @@ instance/
 
 # Virtual Environment
 venv/
-backend/recom_sys
+backend/recom_sys/
