@@ -1,6 +1,6 @@
 from app import db
 
-class Movies(db.Model):
+class Movie(db.Model):
     MovieID = db.Column(db.Integer, primary_key = True)
     Titles = db.Column(db.String(100), nullable = False)
     Genres = db.Column(db.String(100),nullable = False)
