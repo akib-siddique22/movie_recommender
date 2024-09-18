@@ -13,6 +13,11 @@ def get_movies():
 def create_movies():
     try:
         data = request.json
+
+        required_fields = ["MovieID", "Title", "Genres", "tmdbID"]
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing required field: {field}"}), 400
         
         MovieID = data.get("MovieID")
         Title = data.get("Title")
