@@ -51,3 +51,24 @@ def delete_movie(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+#Update a movie
+@app.route("/api/movies/<int:id>", methods=["PATCH"])
+def update_movie(id):
+    try:
+        movie = Movie.query.get(id)
+        if movie is None:
+            return jsonify({"error":"Movie not found"}), 404
+    
+        data = request.json
+
+        movie.Title = data.get("Title", movie.Title)
+        movie.Genres = data.get("Genres", movie.Genres)
+        movie.tmdbID = data.get("tmdbID", movie.tmdbID)
+
+        db.session.commit()
+        return jsonify(movie.to_json()), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
