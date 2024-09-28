@@ -148,11 +148,11 @@ def userinput():
 
 def toGenreArray(userData):
     userGenresL = []
-    for genre in userData:
-        userGenresL.append(genre['label'])
-    print('userGenres', userGenresL)
-    print(type(userGenresL))
-    return userGenresL
+    for genre in userData.values():
+        userGenresL.append(genre)
+    print('userGenres', userGenresL[0])
+    print(type(userGenresL[0]))
+    return userGenresL[0]
 
 
 @app.route('/api/feedback', methods=['POST'])
