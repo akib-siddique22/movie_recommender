@@ -1,12 +1,12 @@
 import { Button } from '@chakra-ui/react'
-import { useState } from 'react'
-import React from 'react'
-import {Routes, Route} from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Home from './pages/Home';
-import coldStart from './pages/coldStart';
-import hybridFilter from './pages/hybridFilter';
-import userInput from './pages/userInput';
+import ColdStart from './pages/coldStart';
+import HybridFilter from './pages/hybridFilter';
+import UserInput from './pages/userInput';
 
 
 function App() {
@@ -14,13 +14,14 @@ function App() {
 
   return (
     <>
-      <Button>hi</Button>
+    <Router>
       <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/movies/input' element={<userInput />} />
-      <Route path='/movies/cold-start' element={<coldStart />} />
-      <Route path='/movies/hybrid-filtering' element={<hybridFilter />} />
+      <Route path='/movies/input' element={<UserInput />} />
+      <Route path='/movies/cold-start' element={<ColdStart />} />
+      <Route path='/movies/hybrid-filtering' element={<HybridFilter />} />
       </Routes>
+    </Router>
     </>
   )
 }
