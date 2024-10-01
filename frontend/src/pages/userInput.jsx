@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Flex, Center } from '@chakra-ui/react';
+//import { useHistory } from 'react-router-dom';
 
 const genres = [
     'Action', 'Adventure', 'Comedy', 'Drama', 'Horror',
@@ -10,6 +11,7 @@ const genres = [
 
 function UserInput() {
     const [selectedGenres, setSelectedGenres] = useState([]);
+    //const history = useHistory();
 
     const handleGenreToggle = (genre) => {
         if (selectedGenres.includes(genre)) {
@@ -35,6 +37,8 @@ function UserInput() {
                 console.log(response)
                 if (response.ok) {
                     console.log('Genres sent successfully');
+                    window.location.href = '/movies/cold-start';
+                    //history.push('/movies/cold-start');
                 } else {
                     throw new Error('Failed to send genres');
                 }
