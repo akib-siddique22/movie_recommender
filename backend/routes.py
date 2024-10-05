@@ -168,11 +168,13 @@ def feedback():
 
 
 def getDataForHybridRecommendation(userRating):
-    userData = userRating['movieRatings']
-    rating_list = []
-    for rating in userData:
-        rating_list.append([rating['movieId'], rating['rating']])
-        addUser([rating['movieId'], rating['rating']])
+    #print(userRating)
+    #userData = userRating['movieRatings']
+    #rating_list = []
+    #for rating in userData:
+        #rating_list.append([rating['movieId'], rating['rating']])
+        #addUser([rating['movieId'], rating['rating']])
+    rating_list = [[key, value] for key, value in userRatings.items()]
     return rating_list
 
 # Functions
