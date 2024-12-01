@@ -4,6 +4,8 @@ from models import Movie
 import os
 import numpy as np
 import pandas as pd
+import csv
+import time
 
 
 from surprise import SVD, Dataset, Reader, BaselineOnly, accuracy
@@ -134,8 +136,6 @@ predictions = algo.test(test_set)
 def userinput():
     global userInput  # access to global userInput
     userInput = request.get_json()
-    print(userInput)
-    print(type(userInput))
     # Calling content_based_recommendation function
     global userGenres
     userGenres = toGenreArray(userInput)
@@ -150,67 +150,25 @@ def toGenreArray(userData):
     userGenresL = []
     for genre in userData.values():
         userGenresL.append(genre)
-    print('userGenres', userGenresL[0])
-    print(type(userGenresL[0]))
     return userGenresL[0]
 
 
 @app.route('/api/feedback', methods=['POST'])
 def feedback():
-    userRating = request.get_json()
-    print(userRating)
-    global userRatingsData
-    userRatingsData = getDataForHybridRecommendation(userRating)
-    print(userRatingsData)
+    userRatings = request.get_json()
+
+    with open('ratings.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+    
+        for movie_id, rating in userRatings.items():
+            timestamp = timestamp = int(time.time())  
+            writer.writerow([user, movie_id, rating, timestamp])
     return {'message': 'successfully received'}
 
 # Function to get movieID & ratings from userRating json
 
 
-def getDataForHybridRecommendation(userRating):
-    #print(userRating)
-    #userData = userRating['movieRatings']
-    #rating_list = []
-    #for rating in userData:
-        #rating_list.append([rating['movieId'], rating['rating']])
-        #addUser([rating['movieId'], rating['rating']])
-    rating_list = [[key, value] for key, value in userRatings.items()]
-    return rating_list
-
 # Functions
-
-
-def addUser(userRatings):  # Function to add new user to the ratings.csv file
-    df = 0
-    dfCheck = pd.read_csv("ratings.csv")
-    dfCheck = dfCheck[dfCheck['UserID'] == user]
-    if (len(dfCheck.index) >= 5):
-        df = pd.read_csv('original/ratings.csv')
-    else:
-        df = pd.read_csv('ratings.csv')
-
-    row = {'UserID': int(user), 'MovieID': int(userRatings[0]),
-           'Rating': int(userRatings[1]), 'Timestamp': int(978824291)}
-    df2 = pd.DataFrame([row])
-
-    df3 = pd.concat([df, df2], ignore_index=True)
-    df3.reset_index()
-
-    df3.to_csv("ratings.dat", sep=":", index=False, header=False)
-
-    splitList = []
-    with open("ratings.dat") as infile:
-        file_contents = infile.readlines()
-    for n in file_contents:
-        new = n.split(":")
-        new[-1] = new[-1].replace("\n", "")
-        splitList.append(new)
-
-    df = pd.DataFrame(splitList, columns=[
-                      'UserID', 'MovieID', 'Rating', 'Timestamp'],)
-    print(df)
-    df.to_csv("ratings.csv", index=False)
-
 
 def coldStart(selectGenres):  # Function to recommend movies when there is no user ratings for any movies using content based filtering
     movies = pd.read_csv('movies.csv')
@@ -262,7 +220,6 @@ def coldStart(selectGenres):  # Function to recommend movies when there is no us
     recommendTable = recommendTable.sort_values(
         by=['Rating'], ascending=False).reset_index(drop=True)
     recommendTable.index = recommendTable.index + 1
-    print(recommendTable.head(10))
     return recommendTable
 
 
@@ -352,7 +309,7 @@ def CBBased(userNum):  # Function to recommend movies using content based filter
     recommendTable = recommendTable.sort_values(
         by=['Rating'], ascending=False).reset_index(drop=True)
     recommendTable.index = recommendTable.index + 1
-
+    
     return recommendTable
 
 
@@ -377,7 +334,7 @@ def getFinalRecommendations(user):
 
     combinedRecommend = combinedRecommend.sort_values(
         by=['Rating'], ascending=False).reset_index(drop=True)
-
+    
     return combinedRecommend
 
 
